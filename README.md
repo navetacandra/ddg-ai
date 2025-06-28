@@ -57,7 +57,7 @@ import {
 
     const messages = [{ role: "user", content: "Hello, how are you?" }];
     const config = {
-      model: models[0]?.model || "gpt-3.5-turbo", // Use an available model
+      model: models[0]?.model || "gpt-4o-mini", // Use an available model
       streamController,
       vqd: vqdHash,
       tools: {
@@ -125,7 +125,7 @@ import {
       { role: "user", content: "What is the capital of France?" },
     ];
     const config: CompletionConfig = {
-      model: models[0]?.model || "gpt-3.5-turbo", // Use an available model
+      model: models[0]?.model || "gpt-4o-mini", // Use an available model
       streamController,
       vqd: vqdHash,
       tools: {
@@ -182,7 +182,7 @@ const {
 
     const messages = [{ role: "user", content: "Tell me a short story." }];
     const config = {
-      model: models[0]?.model || "gpt-3.5-turbo",
+      model: models[0]?.model || "gpt-4o-mini",
       streamController,
       vqd: vqdHash,
     };
@@ -251,7 +251,7 @@ Include the UMD build in your HTML. The library will be available globally as `D
             },
           ];
           const config = {
-            model: models[0]?.model || "gpt-3.5-turbo",
+            model: models[0]?.model || "gpt-4o-mini",
             streamController,
             vqd: vqdHash,
             tools: {
@@ -294,7 +294,7 @@ Generates a text completion from the DuckDuckGo AI model.
 
 - `messages`: An array of `Message` objects representing the conversation history.
 - `config`: An object containing configuration for the completion.
-  - `model`: The ID of the model to use (e.g., `'gpt-3.5-turbo'`).
+  - `model`: The ID of the model to use (e.g., `'gpt-4o-mini'`).
   - `streamController`: An `EventEmitter` instance to handle streaming events (`'completion'`, `'error'`, `'done'`).
   - `vqd` (optional): A `VqdHashData` object. If not provided, `getVqdHash` will be called internally.
   - `request` (optional): A custom `fetch`-like function. Defaults to global `fetch`.
