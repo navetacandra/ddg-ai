@@ -67,7 +67,7 @@ const setupFetch = (init: RequestInit): RequestInit => {
 
 const parseVqdHash = async (
   userAgent: string,
-  hash: string
+  hash: string,
 ): Promise<VqdHashData> => {
   let currentWindow: any;
   let currentDocument: any;
@@ -93,7 +93,7 @@ const parseVqdHash = async (
     "window",
     "navigator",
     "document",
-    `return ${atob(hash)}`
+    `return ${atob(hash)}`,
   )(currentWindow, currentNavigator, currentDocument);
 };
 
@@ -113,7 +113,7 @@ export const getVqdHash = async (request?: RequestMethod) => {
   const payload = setupFetch({ method: "GET" });
   const response = await request(
     `https://duckduckgo.com/duckchat/v1/status`,
-    payload
+    payload,
   );
   if (!response.ok) throw new Error("Failed get Vqd");
 
@@ -130,7 +130,7 @@ export const getModels = async (request?: RequestMethod): Promise<Model[]> => {
   const html = await (
     await request(
       "https://duckduckgo.com/?q=DuckDuckGo+AI+Chat&ia=chat&duckai=1",
-      payload
+      payload,
     )
   ).text();
 
@@ -138,7 +138,7 @@ export const getModels = async (request?: RequestMethod): Promise<Model[]> => {
   const js = await (
     await request(
       `https://duckduckgo.com/dist/wpm.chat.${DDG_FE_CHAT_HASH}.js`,
-      payload
+      payload,
     )
   ).text();
 
@@ -147,7 +147,7 @@ export const getModels = async (request?: RequestMethod): Promise<Model[]> => {
 
   const supportedTools = new Function(`return [${match[1]}]`)();
   const models = new Function(
-    `return [${match[2].replace(/v\.(Free|Internal|Plus)/g, (_, w1) => `"${w1.toUpperCase()}"`).replace(/\$e/g, JSON.stringify(supportedTools))}]`
+    `return [${match[2].replace(/v\.(Free|Internal|Plus)/g, (_, w1) => `"${w1.toUpperCase()}"`).replace(/\$e/g, JSON.stringify(supportedTools))}]`,
   )();
   const availableModels: Model[] = models
     .filter((model: any) => model.availableTo.includes("FREE"))
@@ -158,7 +158,7 @@ export const getModels = async (request?: RequestMethod): Promise<Model[]> => {
         inputCharLimit,
         createdBy,
         isOpenSource: !!isOpenSource,
-      })
+      }),
     );
 
   return availableModels;
@@ -166,7 +166,7 @@ export const getModels = async (request?: RequestMethod): Promise<Model[]> => {
 
 export const generateCompletion = async (
   messages: Message[],
-  config: CompletionConfig
+  config: CompletionConfig,
 ): Promise<CompletionResponse> => {
   if (!config.request) config.request = fetch;
   if (!config.vqd) config.vqd = await getVqdHash(config.request);
@@ -181,7 +181,7 @@ export const generateCompletion = async (
         const buff = new Uint8Array(n);
 
         return btoa(buff.reduce((e, t) => e + String.fromCharCode(t), ""));
-      })
+      }),
     ),
   };
 
@@ -210,7 +210,7 @@ export const generateCompletion = async (
   });
   const response = await config.request(
     "https://duckduckgo.com/duckchat/v1/chat",
-    payload
+    payload,
   );
   if (!response.ok) {
     config.streamController.emit("error", "Failed get completion");
@@ -219,7 +219,7 @@ export const generateCompletion = async (
 
   const vqd: VqdHashData = await parseVqdHash(
     payload.headers && (payload.headers as any)["user-agent"],
-    response.headers.get("X-Vqd-Hash-1") || ""
+    response.headers.get("X-Vqd-Hash-1") || "",
   );
   const assistantResponse: Message = { role: "assistant", content: "" };
   const reader = response.body?.getReader();

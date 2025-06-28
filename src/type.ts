@@ -4,7 +4,7 @@ export type Listener = (data?: any) => void;
 
 export type RequestMethod = (
   input: RequestInfo | URL,
-  init?: RequestInit
+  init?: RequestInit,
 ) => Promise<Response>;
 
 export type Model = {

@@ -4,7 +4,12 @@ export default {
   output: [
     { file: "dist/ddg-ai.cjs.js", format: "cjs" },
     { file: "dist/ddg-ai.esm.js", format: "esm" },
-    { file: "dist/ddg-ai.umd.js", format: "umd", globals: {jsdom: 'jsdom'}, name: "DuckDuckGoAI" },
+    {
+      file: "dist/ddg-ai.umd.js",
+      format: "umd",
+      globals: { jsdom: "jsdom" },
+      name: "DuckDuckGoAI",
+    },
   ],
   plugins: [typescript()],
 };
