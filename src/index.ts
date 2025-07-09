@@ -80,15 +80,14 @@ const parseVqdHash = async (
     "navigator" in window
   ) {
     currentWindow = window;
-    currentNavigator = window.navigator;
-    currentDocument = window.document;
   } else {
     if (!JSDOM) JSDOM = (await import("jsdom")).JSDOM;
     const jsdom = new JSDOM("", { userAgent });
     currentWindow = jsdom.window;
-    currentNavigator = window.navigator;
-    currentDocument = window.document;
   }
+
+  currentNavigator = currentWindow.navigator;
+  currentDocument = currentWindow.document;
 
   return new Function(
     "window",
