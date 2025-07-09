@@ -76,7 +76,8 @@ const parseVqdHash = async (
   if (
     typeof window !== "undefined" &&
     typeof document !== "undefined" &&
-    typeof navigator !== "undefined"
+    typeof navigator !== "undefined" &&
+    "navigator" in window
   ) {
     currentWindow = window;
     currentNavigator = window.navigator;
