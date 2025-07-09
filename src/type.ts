@@ -33,7 +33,7 @@ export type VqdHashData = {
 
 export type CompletionConfig = {
   model: string;
-  streamController: EventEmitter<"completion" | "error" | "done">;
+  streamController?: EventEmitter<"completion" | "error" | "done">;
   vqd?: VqdHashData;
   request?: RequestMethod;
   tools?: {

@@ -1,3 +1,4 @@
+import { EventEmitter } from "./event";
 import type {
   CompletionConfig,
   CompletionResponse,
@@ -170,7 +171,6 @@ export const generateCompletion = async (
 ): Promise<CompletionResponse> => {
   if (!config.request) config.request = fetch;
   if (!config.vqd) config.vqd = await getVqdHash(config.request);
-  console.log(config.vqd);
 
   config.vqd = {
     ...config.vqd,
@@ -185,6 +185,7 @@ export const generateCompletion = async (
     ),
   };
 
+  const isStream = "streamController" in config && config.streamController instanceof EventEmitter;
   const bodyPayload = {
     messages,
     model: config.model,
@@ -213,7 +214,8 @@ export const generateCompletion = async (
     payload,
   );
   if (!response.ok) {
-    config.streamController.emit("error", "Failed get completion");
+    if (isStream)
+      config.streamController.emit("error", "Failed get completion");
     throw new Error("Failed get completion");
   }
 
@@ -227,7 +229,11 @@ export const generateCompletion = async (
   while (true) {
     const { value, done } = await reader?.read()!;
     if (done) {
-      config.streamController.emit("done", { vqd, message: assistantResponse });
+      if (isStream)
+        config.streamController.emit("done", {
+          vqd,
+          message: assistantResponse,
+        });
       break;
     }
 
@@ -241,7 +247,7 @@ export const generateCompletion = async (
           json = JSON.parse(json);
           const content = json.message ?? "";
           assistantResponse.content += content;
-          config.streamController.emit("completion", content);
+          if (isStream) config.streamController.emit("completion", content);
         }
       });
   }

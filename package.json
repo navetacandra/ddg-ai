@@ -1,6 +1,6 @@
 {
   "name": "@navetacandra/ddg-ai",
-  "version": "0.0.3",
+  "version": "0.0.4",
   "author": "navetacandra <dev@navetacandraa.my.id>",
   "license": "MIT",
   "description": "A powerful and unofficial Node.js and browser library for interacting with DuckDuckGo's AI chat features, enabling text generation, model retrieval, and real-time streaming of AI responses.",
